@@ -1,0 +1,44 @@
+{
+  "pack": {
+    "pack_format": 42,
+    "supported_formats": [42, 49],
+    "description": [
+      "",
+      { "text": "S", "color": "#ffa85c" },
+      { "text": "u", "color": "#ffab60" },
+      { "text": "b", "color": "#ffae65" },
+      { "text": "t", "color": "#ffb16a" },
+      { "text": "l", "color": "#ffb46e" },
+      { "text": "e", "color": "#ffb773" },
+      { "text": " ", "color": "#ffba78" },
+      { "text": "T", "color": "#ffbd7c" },
+      { "text": "w", "color": "#ffc081" },
+      { "text": "e", "color": "#ffc386" },
+      { "text": "a", "color": "#ffc68a" },
+      { "text": "k", "color": "#ffc98f" },
+      { "text": "s", "color": "#ffcc94" },
+      { "text": " ", "color": "#ffcf98" },
+      { "text": "t", "color": "#ffd29d" },
+      { "text": "o", "color": "#ffd5a2" },
+      { "text": " ", "color": "#ffd8a6" },
+      { "text": "L", "color": "#ffdbab" },
+      { "text": "i", "color": "#ffdeb0" },
+      { "text": "g", "color": "#ffe1b4" },
+      { "text": "h", "color": "#ffe4b9" },
+      { "text": "t", "color": "#ffe7be" },
+      { "text": "i", "color": "#ffeac2" },
+      { "text": "n", "color": "#ffedc7" },
+      { "text": "g", "color": "#fff0cc" },
+      { "text": "!\n", "color": "#fff3d1" },
+      {
+        "text": "v1"
+      },
+      {
+        "text": " | "
+      },
+      {
+        "text": "by Enchanted_Games"
+      }
+    ]
+  }
+}
