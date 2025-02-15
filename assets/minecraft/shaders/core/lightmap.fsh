@@ -23,7 +23,7 @@ float get_block_brightness(float level) {
 }
 float get_sky_brightness(float level) {
     level -= 0.3;
-    float curved_level = (level * 3.5) / (10 - 9 * 1.4 * level);
+    float curved_level = (level * 3.1) / (10 - 9 * 1.3 * level);
     return mix(clamp(curved_level, 0, 1), 1.0, AmbientLightFactor);
 }
 
@@ -38,10 +38,10 @@ void main() {
     vec3 block_coloured_light = vec3(
         block_brightness,
         block_brightness * (block_brightness * block_brightness * 0.37 + 0.63),
-        block_brightness * (block_brightness * block_brightness * 0.9 + 0.1)
+        block_brightness * (block_brightness * block_brightness * 0.88 + 0.12)
     );
     
-    float sky_brightness = get_sky_brightness(texCoord.y) * SkyFactor;
+    float sky_brightness = get_sky_brightness(texCoord.y + 0.11) * SkyFactor;
     vec3 sky_coloured_light = vec3(
         sky_brightness * (sky_brightness * sky_brightness * 0.25 + 0.75),
         sky_brightness * (sky_brightness * sky_brightness * 0.2 + 0.8),
@@ -52,6 +52,9 @@ void main() {
     if(UseBrightLightmap == 1) {
         color = 0.4 + block_coloured_light;
     }
+
+    vec3 darkened_color = color * vec3(0.7, 0.6, 0.6);
+    color = mix(color, darkened_color, DarkenWorldFactor);
 
     // adjust for night vision effect
     if (NightVisionFactor > 0.0) {
