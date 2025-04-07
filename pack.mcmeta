@@ -1,7 +1,7 @@
 {
   "pack": {
     "pack_format": 42,
-    "supported_formats": [42, 49],
+    "supported_formats": [42, 55],
     "description": [
       "",
       { "text": "S", "color": "#ffa85c" },
@@ -31,7 +31,7 @@
       { "text": "g", "color": "#fff0cc" },
       { "text": "!\n", "color": "#fff3d1" },
       {
-        "text": "v1.1"
+        "text": "v1.2"
       },
       {
         "text": " | "
