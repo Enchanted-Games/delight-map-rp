@@ -1,7 +1,7 @@
 {
   "pack": {
     "pack_format": 42,
-    "supported_formats": [42, 55],
+    "supported_formats": [42, 61],
     "description": [
       "",
       { "text": "S", "color": "#ffa85c" },
@@ -31,13 +31,21 @@
       { "text": "g", "color": "#fff0cc" },
       { "text": "!\n", "color": "#fff3d1" },
       {
-        "text": "v1.2"
+        "text": "v1.3"
       },
       {
         "text": " | "
       },
       {
         "text": "by Enchanted_Games"
+      }
+    ]
+  },
+  "overlays": {
+    "entries": [
+      {
+        "directory": "1_21_5_below_compat",
+        "formats": [42, 56]
       }
     ]
   }
