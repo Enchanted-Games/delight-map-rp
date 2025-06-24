@@ -26,23 +26,22 @@ void main() {
         return; 
     }
 
-    float effectAdjustment = abs(1 - (DARKNESS_SCALE * 1.1));
-
-    float block_brightness = get_block_brightness(texCoord.x) * BLOCK_FACTOR * effectAdjustment;
+    float block_brightness = get_block_brightness(texCoord.x) * BLOCK_FACTOR;
+    float sky_brightness = get_sky_brightness(texCoord.y + 0.11) * SKY_FACTOR;
+    
     vec3 block_coloured_light = vec3(
         block_brightness,
         block_brightness * (block_brightness * block_brightness * 0.39 + 0.61),
         block_brightness * (block_brightness * block_brightness * 0.88 + 0.12)
     );
     
-    float sky_brightness = get_sky_brightness(texCoord.y + 0.11) * SKY_FACTOR * effectAdjustment;
     vec3 sky_coloured_light = vec3(
         sky_brightness * (sky_brightness * sky_brightness * 0.25 + 0.75),
         sky_brightness * (sky_brightness * sky_brightness * 0.2 + 0.8),
         sky_brightness
-    ) * SKY_LIGHT_COLOUR * max(block_brightness, sky_brightness + 0.4) + (sky_brightness / 4);
+    ) * SKY_LIGHT_COLOUR;
 
-    vec3 color = block_coloured_light + max(sky_coloured_light, 0);
+    vec3 color = sky_coloured_light + block_coloured_light;
     if(USE_BRIGHT_LIGHTMAP == 1) {
         color = 0.4 + block_coloured_light;
     }
@@ -54,9 +53,13 @@ void main() {
     if (NIGHT_VISION_FACTOR > 0.0) {
         color = mix(color, vec3(1), NIGHT_VISION_FACTOR);
     }
+    // adjust for darkness effect
+    if (DARKNESS_SCALE > 0.0) {
+        color = clamp(color - vec3(DARKNESS_SCALE), 0.0, 1.0);
+    }
 
     // adjust for brightness setting
-    color += (BRIGHTNESS_FACTOR - 0.2) / 4;
+    color += (BRIGHTNESS_FACTOR - 0.2) / 4.0;
 
     fragColor = vec4(color, 1);
 }
