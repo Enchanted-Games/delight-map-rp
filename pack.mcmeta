@@ -2,6 +2,8 @@
   "pack": {
     "pack_format": 42,
     "supported_formats": [42, 64],
+    "min_format": 42,
+    "max_format": 65,
     "description": [
       "",
       { "text": "S", "color": "#ffa85c" },
@@ -31,7 +33,7 @@
       { "text": "g", "color": "#fff0cc" },
       { "text": "!\n", "color": "#fff3d1" },
       {
-        "text": "v1.4.1"
+        "text": "v1.5-dev"
       },
       {
         "text": " | "
@@ -45,7 +47,15 @@
     "entries": [
       {
         "directory": "1_21_5_below_compat",
-        "formats": [42, 56]
+        "formats": [42, 56],
+        "min_format": 42,
+        "max_format": 56
+      },
+      {
+        "directory": "1_21_8_below_compat",
+        "formats": [57, 64],
+        "min_format": 57,
+        "max_format": [65, 1]
       }
     ]
   }

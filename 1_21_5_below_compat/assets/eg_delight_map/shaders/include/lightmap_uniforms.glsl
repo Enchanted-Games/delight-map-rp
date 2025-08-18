@@ -17,3 +17,7 @@ uniform float BrightnessFactor;
 #define DARKEN_WORLD_FACTOR DarkenWorldFactor
 #define BRIGHTNESS_FACTOR BrightnessFactor
 #define SKY_LIGHT_COLOUR SkyLightColor
+
+bool isInEnd() {
+    return USE_BRIGHT_LIGHTMAP == 1;
+}
