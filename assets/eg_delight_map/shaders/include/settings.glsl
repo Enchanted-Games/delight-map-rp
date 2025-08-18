@@ -1,1 +1,1 @@
-#define END_FLASH_COLOUR tovec(0xe9aef2) * 1.4
+#define END_FLASH_COLOUR tovec(0xc18bf7)

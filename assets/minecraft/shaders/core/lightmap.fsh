@@ -22,7 +22,11 @@ float getAmbientFactor() {
 }
 
 float getCurvedSkyFactorForEndFlash() {
-    return texCoord.y * texCoord.y * SKY_FACTOR * SKY_FACTOR * 0.8;
+#ifdef HAS_END_FLASHES
+    return texCoord.y * texCoord.y * SKY_FACTOR * SKY_FACTOR;
+#else
+    return 0.0;
+#endif
 }
 
 
@@ -45,7 +49,7 @@ void main() {
         return; 
     }
 
-    float block_brightness = get_block_brightness(texCoord.x - (isInEnd() ? getCurvedSkyFactorForEndFlash() / 1.7 : 0)) * BLOCK_FACTOR;
+    float block_brightness = get_block_brightness(texCoord.x - min(0.1, isInEnd() ? getCurvedSkyFactorForEndFlash() * 0.7 : 0)) * BLOCK_FACTOR;
     float sky_brightness = get_sky_brightness(texCoord.y + 0.11) * SKY_FACTOR;
     
     vec3 block_coloured_light = vec3(
