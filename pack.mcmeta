@@ -3,7 +3,7 @@
     "pack_format": 42,
     "supported_formats": [42, 64],
     "min_format": 42,
-    "max_format": 65,
+    "max_format": 66,
     "description": [
       "",
       { "text": "S", "color": "#ffa85c" },

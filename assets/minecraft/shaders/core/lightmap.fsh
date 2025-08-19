@@ -12,13 +12,20 @@ in vec2 texCoord;
 out vec4 fragColor;
 
 
-float getAmbientFactor() {
+float getAdjustedAmbientLightFactor() {
     return
 #ifdef HAS_END_FLASHES
     isInEnd() ? 0 : AMBIENT_LIGHT_FACTOR;
 #else
     AMBIENT_LIGHT_FACTOR;
 #endif
+}
+
+float getAdjustedBlockFactor() {
+    if(isInEnd()) {
+        return (BLOCK_FACTOR / 2) + 0.7;
+    }
+    return BLOCK_FACTOR;
 }
 
 float getCurvedSkyFactorForEndFlash() {
@@ -30,15 +37,15 @@ float getCurvedSkyFactorForEndFlash() {
 }
 
 
-float get_block_brightness(float level) {
+float getBlockBrightness(float level) {
     float curved_level = level / (3 - 2 * level);
-    return mix(clamp(curved_level - 0.05, 0, 1), 1.0, getAmbientFactor());
+    return mix(clamp(curved_level - 0.05, 0, 1), 1.0, getAdjustedAmbientLightFactor());
 }
 
-float get_sky_brightness(float level) {
+float getSkyBrightness(float level) {
     level -= 0.3;
     float curved_level = (level * 3.1) / (10 - 9 * 1.3 * level);
-    return mix(clamp(curved_level, 0, 1), 1.0, getAmbientFactor());
+    return mix(clamp(curved_level, 0, 1), 1.0, getAdjustedAmbientLightFactor());
 }
 
 
@@ -49,22 +56,32 @@ void main() {
         return; 
     }
 
-    float block_brightness = get_block_brightness(texCoord.x - min(0.1, isInEnd() ? getCurvedSkyFactorForEndFlash() * 0.7 : 0)) * BLOCK_FACTOR;
-    float sky_brightness = get_sky_brightness(texCoord.y + 0.11) * SKY_FACTOR;
+    float blockBrightness = getBlockBrightness(texCoord.x - min(0.1, isInEnd() ? getCurvedSkyFactorForEndFlash() * 0.85 : 0)) * getAdjustedBlockFactor();
+    float skyBrightness = getSkyBrightness(texCoord.y + 0.11) * SKY_FACTOR;
     
-    vec3 block_coloured_light = vec3(
-        block_brightness,
-        block_brightness * (block_brightness * block_brightness * 0.39 + 0.61),
-        block_brightness * (block_brightness * block_brightness * 0.88 + 0.12)
-    );
+    vec3 blockColouredLight;
+    if(isInEnd()) {
+        float adjustedBlockBrightness = clamp(blockBrightness - 0.2, 0.05, 0.7);
+        blockColouredLight = vec3(
+            adjustedBlockBrightness * (adjustedBlockBrightness * adjustedBlockBrightness * 0.2 + 0.8) - 0.03,
+            adjustedBlockBrightness * (adjustedBlockBrightness * 0.2 + 0.8),
+            adjustedBlockBrightness
+        );
+    } else {
+        blockColouredLight = vec3(
+            blockBrightness,
+            blockBrightness * (blockBrightness * blockBrightness * 0.39 + 0.61),
+            blockBrightness * (blockBrightness * blockBrightness * 0.88 + 0.12)
+        );
+    }
     
-    vec3 sky_coloured_light = vec3(
-        sky_brightness * (sky_brightness * sky_brightness * 0.25 + 0.75),
-        sky_brightness * (sky_brightness * sky_brightness * 0.2 + 0.8),
-        sky_brightness
+    vec3 skyColouredLight = vec3(
+        skyBrightness * (skyBrightness * skyBrightness * 0.25 + 0.75),
+        skyBrightness * (skyBrightness * skyBrightness * 0.2 + 0.8),
+        skyBrightness
     ) * SKY_LIGHT_COLOUR;
 
-    vec3 color = sky_coloured_light + block_coloured_light;
+    vec3 color = skyColouredLight + blockColouredLight;
 
     if(
     #ifdef HAS_END_FLASHES
@@ -73,7 +90,7 @@ void main() {
         USE_BRIGHT_LIGHTMAP == 1
     #endif
     ) {
-        color = 0.4 + block_coloured_light;
+        color = 0.4 + blockColouredLight;
     }
 
     vec3 darkened_color = color * vec3(0.7, 0.6, 0.6);
@@ -95,6 +112,7 @@ void main() {
         color += (BRIGHTNESS_FACTOR - 0.2) / 4.0;
     }
 
+    // mix end flash colour for end flashes if in the end
 #ifdef HAS_END_FLASHES
     if(isInEnd()) {
         color = mix(color, END_FLASH_COLOUR, getCurvedSkyFactorForEndFlash());
