@@ -102,7 +102,7 @@ void main() {
     }
     // adjust for darkness effect
     if (DARKNESS_SCALE > 0.0) {
-        color = clamp(color - vec3(DARKNESS_SCALE), 0.0, 1.0);
+        color = clamp(color - vec3(DARKNESS_SCALE), 0.15, 1.0);
     }
 
     // adjust for brightness setting
@@ -115,7 +115,7 @@ void main() {
     // mix end flash colour for end flashes if in the end
 #ifdef HAS_END_FLASHES
     if(isInEnd()) {
-        color = mix(color, END_FLASH_COLOUR, getCurvedSkyFactorForEndFlash());
+        color = mix(color, END_FLASH_COLOUR, min(getCurvedSkyFactorForEndFlash(), abs(1 - NIGHT_VISION_FACTOR)));
     }
 #endif
 
