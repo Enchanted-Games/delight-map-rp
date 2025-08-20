@@ -38,14 +38,14 @@ float getCurvedSkyFactorForEndFlash() {
 
 
 float getBlockBrightness(float level) {
-    float curved_level = level / (3 - 2 * level);
-    return mix(clamp(curved_level - 0.05, 0, 1), 1.0, getAdjustedAmbientLightFactor());
+    float curvedLevel = level / (3 - 2 * level);
+    return mix(clamp(curvedLevel - 0.05, 0, 1), 1.0, getAdjustedAmbientLightFactor());
 }
 
 float getSkyBrightness(float level) {
     level -= 0.3;
-    float curved_level = (level * 3.1) / (10 - 9 * 1.3 * level);
-    return mix(clamp(curved_level, 0, 1), 1.0, getAdjustedAmbientLightFactor());
+    float curvedLevel = (level * 3.1) / (10 - 9 * 1.3 * level);
+    return mix(clamp(curvedLevel, 0, 1), 1.0, getAdjustedAmbientLightFactor());
 }
 
 
@@ -93,8 +93,8 @@ void main() {
         color = 0.4 + blockColouredLight;
     }
 
-    vec3 darkened_color = color * vec3(0.7, 0.6, 0.6);
-    color = mix(color, darkened_color, DARKEN_WORLD_FACTOR);
+    vec3 darkenedColour = color * vec3(0.7, 0.6, 0.6);
+    color = mix(color, darkenedColour, DARKEN_WORLD_FACTOR);
 
     // adjust for night vision effect
     if (NIGHT_VISION_FACTOR > 0.0) {
@@ -102,7 +102,7 @@ void main() {
     }
     // adjust for darkness effect
     if (DARKNESS_SCALE > 0.0) {
-        color = clamp(color - vec3(DARKNESS_SCALE), 0.15, 1.0);
+        color = clamp(color - vec3(min(0.9, DARKNESS_SCALE)), 0.0, 1.0);
     }
 
     // adjust for brightness setting
