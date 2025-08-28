@@ -32,14 +32,7 @@
       { "text": "n", "color": "#ffedc7" },
       { "text": "g", "color": "#fff0cc" },
       { "text": "!\n", "color": "#fff3d1" },
-      "v1.5b | by ",
-      {
-        "color": "white",
-        "player": {
-          "name": "Enchanted_Games"
-        }
-      },
-      " Enchanted_Games"
+      "v1.5b | by Enchanted_Games"
     ]
   },
   "overlays": {
