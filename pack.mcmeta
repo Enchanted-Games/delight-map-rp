@@ -3,7 +3,7 @@
     "pack_format": 42,
     "supported_formats": [42, 64],
     "min_format": 42,
-    "max_format": 67,
+    "max_format": 69,
     "description": [
       "",
       { "text": "S", "color": "#ffa85c" },
@@ -32,7 +32,7 @@
       { "text": "n", "color": "#ffedc7" },
       { "text": "g", "color": "#fff0cc" },
       { "text": "!\n", "color": "#fff3d1" },
-      "v1.5b | by Enchanted_Games"
+      "v1.5.1b | by Enchanted_Games"
     ]
   },
   "overlays": {
