@@ -28,3 +28,7 @@ bool isInEnd() {
     //       25w33a-25w34b           25w35a+
     return skyCol == 0xe57fff || skyCol == 0xe533ff;
 }
+
+bool isInNether() {
+    return abs(AMBIENT_LIGHT_FACTOR - 0.1) < 0.01;
+}

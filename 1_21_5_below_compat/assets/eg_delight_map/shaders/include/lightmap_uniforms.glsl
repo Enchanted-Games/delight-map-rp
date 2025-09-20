@@ -21,3 +21,7 @@ uniform float BrightnessFactor;
 bool isInEnd() {
     return USE_BRIGHT_LIGHTMAP == 1;
 }
+
+bool isInNether() {
+    return abs(AMBIENT_LIGHT_FACTOR - 0.1) < 0.01;
+}

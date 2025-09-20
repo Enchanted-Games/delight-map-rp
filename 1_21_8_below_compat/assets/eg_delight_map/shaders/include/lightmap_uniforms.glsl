@@ -23,3 +23,7 @@ layout(std140) uniform LightmapInfo {
 bool isInEnd() {
     return USE_BRIGHT_LIGHTMAP == 1;
 }
+
+bool isInNether() {
+    return abs(AMBIENT_LIGHT_FACTOR - 0.1) < 0.01;
+}
