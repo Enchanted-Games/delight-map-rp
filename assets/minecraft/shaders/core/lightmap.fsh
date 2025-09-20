@@ -23,14 +23,14 @@ float getAdjustedAmbientLightFactor() {
 
 float getAdjustedBlockFactor() {
     if(isInEnd()) {
-        return (BLOCK_FACTOR / 2) + 0.7;
+        return 1.4;
     }
     return BLOCK_FACTOR;
 }
 
 float getCurvedSkyFactorForEndFlash() {
 #ifdef HAS_END_FLASHES
-    return texCoord.y * texCoord.y * SKY_FACTOR * SKY_FACTOR;
+    return clamp(texCoord.y * texCoord.y * SKY_FACTOR * SKY_FACTOR, 0, END_FLASH_MAX_INTENSITY);
 #else
     return 0.0;
 #endif

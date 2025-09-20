@@ -1,1 +1,2 @@
 #define END_FLASH_COLOUR tovec(0xc18bf7)
+#define END_FLASH_MAX_INTENSITY 0.6
