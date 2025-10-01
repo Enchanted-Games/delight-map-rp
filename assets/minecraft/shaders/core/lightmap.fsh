@@ -120,8 +120,4 @@ void main() {
 #endif
 
     fragColor = vec4(color, 1);
-
-    if(isInNether()) {
-        fragColor = vec4(vec3(0.7), 1);
-    }
 }
