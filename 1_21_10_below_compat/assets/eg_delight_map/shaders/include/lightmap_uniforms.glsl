@@ -24,7 +24,9 @@ layout(std140) uniform LightmapInfo {
 #define AMBIENT_COLOR lightmapInfo.AmbientColor
 
 bool isInEnd() {
-    return toint(SKY_LIGHT_COLOUR) == 0xe580ff;
+    int skyCol = toint(SKY_LIGHT_COLOUR);
+    //       25w33a-25w34b           25w35a+
+    return skyCol == 0xe57fff || skyCol == 0xe533ff;
 }
 
 bool isInNether() {

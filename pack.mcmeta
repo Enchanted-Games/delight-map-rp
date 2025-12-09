@@ -1,9 +1,9 @@
 {
   "pack": {
     "pack_format": 42,
-    "supported_formats": [42, 64],
+    "supported_formats": [42, 75],
     "min_format": 42,
-    "max_format": 69,
+    "max_format": 75,
     "description": [
       "",
       { "text": "S", "color": "#ffa85c" },
@@ -32,7 +32,7 @@
       { "text": "n", "color": "#ffedc7" },
       { "text": "g", "color": "#fff0cc" },
       { "text": "!\n", "color": "#fff3d1" },
-      "v1.5.1b | by Enchanted_Games"
+      "v1.5.3 | by Enchanted_Games"
     ]
   },
   "overlays": {
@@ -48,6 +48,12 @@
         "formats": [57, 64],
         "min_format": 57,
         "max_format": [65, 1]
+      },
+      {
+        "directory": "1_21_10_below_compat",
+        "formats": [65, 69],
+        "min_format": 65,
+        "max_format": 69
       }
     ]
   }
