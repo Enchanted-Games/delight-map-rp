@@ -48,6 +48,18 @@ float getSkyBrightness(float level) {
     return mix(clamp(curvedLevel, 0, 1), 1.0, getAdjustedAmbientLightFactor());
 }
 
+float blockLightColourMixFactor(float level) {
+    return (2.0 * level - 1.0) * (2.0 * level - 1.0);
+}
+
+vec3 getAdjustedBlockLightColour(float level) {
+#ifdef HAS_BLOCK_LIGHT_UNIFORM
+    if(toint(BLOCK_LIGHT_TINT) == 0xffd88c) {
+        return isInNether() ? NETHER_BLOCK_LIGHT_COLOUR : OVERWORLD_BLOCK_LIGHT_COLOUR;
+    }
+#endif
+    return BLOCK_LIGHT_TINT;
+}
 
 void main() {
     // always have the bottom right pixel be white to ensure gui elements look correct
@@ -56,7 +68,8 @@ void main() {
         return; 
     }
 
-    float blockBrightness = getBlockBrightness(texCoord.x - min(0.1, isInEnd() ? getCurvedSkyFactorForEndFlash() * 0.85 : 0)) * getAdjustedBlockFactor();
+    float blockLevel = texCoord.x - min(0.1, isInEnd() ? getCurvedSkyFactorForEndFlash() * 0.85 : 0);
+    float blockBrightness = getBlockBrightness(blockLevel) * getAdjustedBlockFactor();
     float skyBrightness = getSkyBrightness(texCoord.y + 0.11) * SKY_FACTOR;
     
     vec3 blockColouredLight;
@@ -68,11 +81,12 @@ void main() {
             adjustedBlockBrightness
         );
     } else {
-        blockColouredLight = vec3(
-            blockBrightness,
-            blockBrightness * (blockBrightness * blockBrightness * 0.39 + 0.61),
-            blockBrightness * (blockBrightness * blockBrightness * 0.88 + 0.12)
-        );
+        blockColouredLight = mix(getAdjustedBlockLightColour(blockLevel), vec3(1.0), blockLightColourMixFactor(blockLevel)) * blockBrightness * 1.25;
+        // blockColouredLight = vec3(
+        //     blockBrightness,
+        //     blockBrightness * (blockBrightness * blockBrightness * 0.39 + 0.61),
+        //     blockBrightness * (blockBrightness * blockBrightness * 0.88 + 0.12)
+        // );
     }
     
     vec3 skyColouredLight = vec3(

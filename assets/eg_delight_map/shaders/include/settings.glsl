@@ -1,2 +1,5 @@
 #define END_FLASH_COLOUR tovec(0xc18bf7)
 #define END_FLASH_MAX_INTENSITY 0.6
+
+#define OVERWORLD_BLOCK_LIGHT_COLOUR tovec(0xd89440)
+#define NETHER_BLOCK_LIGHT_COLOUR tovec(0xff00ff)

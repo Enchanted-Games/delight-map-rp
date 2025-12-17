@@ -18,6 +18,8 @@ layout(std140) uniform LightmapInfo {
 #define DARKNESS_SCALE lightmapInfo.DarknessScale
 #define DARKEN_WORLD_FACTOR lightmapInfo.DarkenWorldFactor
 #define BRIGHTNESS_FACTOR lightmapInfo.BrightnessFactor
+
+#define BLOCK_LIGHT_TINT OVERWORLD_BLOCK_LIGHT_COLOUR
 #define SKY_LIGHT_COLOUR lightmapInfo.SkyLightColor
 
 #define HAS_END_FLASHES

@@ -1,9 +1,9 @@
 {
   "pack": {
     "pack_format": 42,
-    "supported_formats": [42, 75],
+    "supported_formats": [42, 76],
     "min_format": 42,
-    "max_format": 75,
+    "max_format": 76,
     "description": [
       "",
       { "text": "S", "color": "#ffa85c" },
@@ -54,6 +54,12 @@
         "formats": [65, 69],
         "min_format": 65,
         "max_format": 69
+      },
+      {
+        "directory": "1_21_11_below_compat",
+        "formats": [70, 75],
+        "min_format": 70,
+        "max_format": 75
       }
     ]
   }

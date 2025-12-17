@@ -16,6 +16,8 @@ uniform float BrightnessFactor;
 #define DARKNESS_SCALE DarknessScale
 #define DARKEN_WORLD_FACTOR DarkenWorldFactor
 #define BRIGHTNESS_FACTOR BrightnessFactor
+
+#define BLOCK_LIGHT_TINT OVERWORLD_BLOCK_LIGHT_COLOUR
 #define SKY_LIGHT_COLOUR SkyLightColor
 
 bool isInEnd() {
