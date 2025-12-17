@@ -53,7 +53,7 @@ float blockLightColourMixFactor(float level) {
 }
 
 vec3 getAdjustedBlockLightColour(float level) {
-#ifdef HAS_BLOCK_LIGHT_UNIFORM
+#ifdef IS_26_1
     if(toint(BLOCK_LIGHT_TINT) == 0xffd88c) {
         return isInNether() ? NETHER_BLOCK_LIGHT_COLOUR : OVERWORLD_BLOCK_LIGHT_COLOUR;
     }
@@ -62,11 +62,13 @@ vec3 getAdjustedBlockLightColour(float level) {
 }
 
 void main() {
+    #ifndef IS_26_1
     // always have the bottom right pixel be white to ensure gui elements look correct
     if(texCoord.x * 16 >= 15 && texCoord.y * 16 >= 15) {
         fragColor = vec4(1.0, 1.0, 1.0, 1.0);
         return; 
     }
+    #endif
 
     float blockLevel = texCoord.x - min(0.1, isInEnd() ? getCurvedSkyFactorForEndFlash() * 0.85 : 0);
     float blockBrightness = getBlockBrightness(blockLevel) * getAdjustedBlockFactor();
@@ -82,11 +84,6 @@ void main() {
         );
     } else {
         blockColouredLight = mix(getAdjustedBlockLightColour(blockLevel), vec3(1.0), blockLightColourMixFactor(blockLevel)) * blockBrightness * 1.25;
-        // blockColouredLight = vec3(
-        //     blockBrightness,
-        //     blockBrightness * (blockBrightness * blockBrightness * 0.39 + 0.61),
-        //     blockBrightness * (blockBrightness * blockBrightness * 0.88 + 0.12)
-        // );
     }
     
     vec3 skyColouredLight = vec3(
@@ -112,7 +109,7 @@ void main() {
 
     // adjust for night vision effect
     if (NIGHT_VISION_FACTOR > 0.0) {
-        color = mix(color, vec3(1), NIGHT_VISION_FACTOR);
+        color = mix(color, NIGHT_VISION_COLOR * 1.6, NIGHT_VISION_FACTOR);
     }
     // adjust for darkness effect
     if (DARKNESS_SCALE > 0.0) {

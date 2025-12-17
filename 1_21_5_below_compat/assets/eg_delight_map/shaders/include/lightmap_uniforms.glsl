@@ -20,6 +20,8 @@ uniform float BrightnessFactor;
 #define BLOCK_LIGHT_TINT OVERWORLD_BLOCK_LIGHT_COLOUR
 #define SKY_LIGHT_COLOUR SkyLightColor
 
+#define NIGHT_VISION_COLOR vec3(0.6392)
+
 bool isInEnd() {
     return USE_BRIGHT_LIGHTMAP == 1;
 }

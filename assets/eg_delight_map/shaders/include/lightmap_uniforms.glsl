@@ -20,12 +20,14 @@ layout(std140) uniform LightmapInfo {
 #define DARKEN_WORLD_FACTOR lightmapInfo.BossOverlayWorldDarkeningFactor
 #define BRIGHTNESS_FACTOR lightmapInfo.BrightnessFactor
 
-#define HAS_BLOCK_LIGHT_UNIFORM
+#define IS_26_1
 #define BLOCK_LIGHT_TINT lightmapInfo.BlockLightTint
 #define SKY_LIGHT_COLOUR lightmapInfo.SkyLightColor
 
 #define HAS_END_FLASHES
 #define AMBIENT_COLOR lightmapInfo.AmbientColor
+
+#define NIGHT_VISION_COLOR lightmapInfo.NightVisionColor
 
 bool isInEnd() {
     return toint(SKY_LIGHT_COLOUR) == 0xac60cd;

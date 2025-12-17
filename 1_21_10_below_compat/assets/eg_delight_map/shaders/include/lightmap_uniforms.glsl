@@ -25,6 +25,8 @@ layout(std140) uniform LightmapInfo {
 #define HAS_END_FLASHES
 #define AMBIENT_COLOR lightmapInfo.AmbientColor
 
+#define NIGHT_VISION_COLOR vec3(0.6392)
+
 bool isInEnd() {
     int skyCol = toint(SKY_LIGHT_COLOUR);
     //       25w33a-25w34b           25w35a+
