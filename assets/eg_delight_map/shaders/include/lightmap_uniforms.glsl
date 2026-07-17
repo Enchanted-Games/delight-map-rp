@@ -11,20 +11,16 @@ layout(std140) uniform LightmapInfo {
     vec3 NightVisionColor;
 } lightmapInfo;
 
-#define AMBIENT_LIGHT_FACTOR 0
 #define SKY_FACTOR lightmapInfo.SkyFactor
 #define BLOCK_FACTOR lightmapInfo.BlockFactor
-#define USE_BRIGHT_LIGHTMAP 0
 #define NIGHT_VISION_FACTOR lightmapInfo.NightVisionFactor
 #define DARKNESS_SCALE lightmapInfo.DarknessScale
 #define DARKEN_WORLD_FACTOR lightmapInfo.BossOverlayWorldDarkeningFactor
 #define BRIGHTNESS_FACTOR lightmapInfo.BrightnessFactor
 
-#define IS_26_1
 #define BLOCK_LIGHT_TINT lightmapInfo.BlockLightTint
 #define SKY_LIGHT_COLOUR lightmapInfo.SkyLightColor
 
-#define HAS_END_FLASHES
 #define AMBIENT_COLOR lightmapInfo.AmbientColor
 
 #define NIGHT_VISION_COLOR lightmapInfo.NightVisionColor
@@ -34,5 +30,5 @@ bool isInEnd() {
 }
 
 bool isInNether() {
-    return false;
+    return toint(AMBIENT_COLOR) == 0x302821 && toint(SKY_LIGHT_COLOUR) == 0x7a7aff;
 }

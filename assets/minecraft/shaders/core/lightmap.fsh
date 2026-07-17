@@ -11,80 +11,75 @@ in vec2 texCoord;
 
 out vec4 fragColor;
 
-
-float getAdjustedAmbientLightFactor() {
-    return
-#ifdef HAS_END_FLASHES
-    isInEnd() ? 0 : AMBIENT_LIGHT_FACTOR;
-#else
-    AMBIENT_LIGHT_FACTOR;
-#endif
+vec3 getAdjustedAmbientColour() {
+    vec3 multiplier = OVERWORLD_AMBIENT_MULTIPLIER;
+    if(isInEnd()) {
+        multiplier = END_AMBIENT_MULTIPLIER;
+    } else if(isInNether()) {
+        multiplier = NETHER_AMBIENT_MULTIPLIER;
+    }
+    return AMBIENT_COLOR * multiplier;
 }
 
 float getAdjustedBlockFactor() {
+    float addition = OVERWORLD_BLOCK_FACTOR_ADD;
     if(isInEnd()) {
-        return 1.4;
+        addition = END_BLOCK_FACTOR_ADD;
+    } else if(isInNether()) {
+        addition = NETHER_BLOCK_FACTOR_ADD;
     }
-    return BLOCK_FACTOR;
+    return BLOCK_FACTOR + addition;
+}
+
+vec3 getAdjustedBlockLightColour(float level) {
+    if(toint(BLOCK_LIGHT_TINT) != 0xffd88c) {
+        return BLOCK_LIGHT_TINT;
+    }
+    if(isInEnd()) {
+        return END_BLOCK_LIGHT_COLOUR;
+    } else if(isInNether()) {
+        return NETHER_BLOCK_LIGHT_COLOUR;
+    }
+    return OVERWORLD_BLOCK_LIGHT_COLOUR;
+
 }
 
 float getCurvedSkyFactorForEndFlash() {
-#ifdef HAS_END_FLASHES
-    return clamp(texCoord.y * texCoord.y * SKY_FACTOR * SKY_FACTOR, 0, END_FLASH_MAX_INTENSITY);
-#else
-    return 0.0;
-#endif
+    return texCoord.y * texCoord.y * SKY_FACTOR * SKY_FACTOR * END_FLASH_INTENSITY;
 }
 
+float getBlockLightSpreadFactor() {
+    if(isInEnd()) {
+        return END_BLOCK_LIGHT_SPREAD_FACTOR;
+    } else if(isInNether()) {
+        return NETHER_BLOCK_LIGHT_SPREAD_FACTOR;
+    }
+    return OVERWORLD_BLOCK_LIGHT_SPREAD_FACTOR;
+}
 
 float getBlockBrightness(float level) {
     float curvedLevel = level / (3 - 2 * level);
-    return mix(clamp(curvedLevel - 0.05, 0, 1), 1.0, getAdjustedAmbientLightFactor());
+    float clamped = clamp(curvedLevel - 0.05, 0, 1);
+    return clamped * mix(clamped, 1, getBlockLightSpreadFactor());
 }
 
 float getSkyBrightness(float level) {
     level -= 0.3;
     float curvedLevel = (level * 3.1) / (10 - 9 * 1.3 * level);
-    return mix(clamp(curvedLevel, 0, 1), 1.0, getAdjustedAmbientLightFactor());
+    return clamp(curvedLevel, 0, 1);
 }
 
 float blockLightColourMixFactor(float level) {
     return (2.0 * level - 1.0) * (2.0 * level - 1.0);
 }
 
-vec3 getAdjustedBlockLightColour(float level) {
-#ifdef IS_26_1
-    if(toint(BLOCK_LIGHT_TINT) == 0xffd88c) {
-        return isInNether() ? NETHER_BLOCK_LIGHT_COLOUR : OVERWORLD_BLOCK_LIGHT_COLOUR;
-    }
-#endif
-    return BLOCK_LIGHT_TINT;
-}
-
 void main() {
-    #ifndef IS_26_1
-    // always have the bottom right pixel be white to ensure gui elements look correct
-    if(texCoord.x * 16 >= 15 && texCoord.y * 16 >= 15) {
-        fragColor = vec4(1.0, 1.0, 1.0, 1.0);
-        return; 
-    }
-    #endif
-
-    float blockLevel = texCoord.x - min(0.1, isInEnd() ? getCurvedSkyFactorForEndFlash() * 0.85 : 0);
+    float blockSkyFactorCurve = min(isInEnd() ? getCurvedSkyFactorForEndFlash() * 0.5 : 0, 0.8);
+    float blockLevel = texCoord.x - min(0.1, blockSkyFactorCurve);
     float blockBrightness = getBlockBrightness(blockLevel) * getAdjustedBlockFactor();
-    float skyBrightness = getSkyBrightness(texCoord.y + 0.11) * SKY_FACTOR;
+    float skyBrightness = getSkyBrightness(texCoord.y + 0.11) * (isInEnd() ? 0 : SKY_FACTOR);
     
-    vec3 blockColouredLight;
-    if(isInEnd()) {
-        float adjustedBlockBrightness = clamp(blockBrightness - 0.2, 0.05, 0.7);
-        blockColouredLight = vec3(
-            adjustedBlockBrightness * (adjustedBlockBrightness * adjustedBlockBrightness * 0.2 + 0.8) - 0.03,
-            adjustedBlockBrightness * (adjustedBlockBrightness * 0.2 + 0.8),
-            adjustedBlockBrightness
-        );
-    } else {
-        blockColouredLight = mix(getAdjustedBlockLightColour(blockLevel), vec3(1.0), blockLightColourMixFactor(blockLevel)) * blockBrightness * 1.25;
-    }
+    vec3 blockColouredLight = mix(getAdjustedBlockLightColour(blockLevel), vec3(1.0), blockLightColourMixFactor(blockLevel)) * blockBrightness * 1.25;
     
     vec3 skyColouredLight = vec3(
         skyBrightness * (skyBrightness * skyBrightness * 0.25 + 0.75),
@@ -92,17 +87,7 @@ void main() {
         skyBrightness
     ) * SKY_LIGHT_COLOUR;
 
-    vec3 color = skyColouredLight + blockColouredLight;
-
-    if(
-    #ifdef HAS_END_FLASHES
-        isInEnd()
-    #else
-        USE_BRIGHT_LIGHTMAP == 1
-    #endif
-    ) {
-        color = 0.4 + blockColouredLight;
-    }
+    vec3 color = getAdjustedAmbientColour() + skyColouredLight + blockColouredLight;
 
     vec3 darkenedColour = color * vec3(0.7, 0.6, 0.6);
     color = mix(color, darkenedColour, DARKEN_WORLD_FACTOR);
@@ -124,11 +109,9 @@ void main() {
     }
 
     // mix end flash colour for end flashes if in the end
-#ifdef HAS_END_FLASHES
     if(isInEnd()) {
-        color = mix(color, END_FLASH_COLOUR, min(getCurvedSkyFactorForEndFlash(), abs(1 - NIGHT_VISION_FACTOR)));
+        color = mix(clamp(color, vec3(0), vec3(1)), END_FLASH_COLOUR, min(getCurvedSkyFactorForEndFlash(), abs(1 - NIGHT_VISION_FACTOR)));
     }
-#endif
 
     fragColor = vec4(color, 1);
 }
