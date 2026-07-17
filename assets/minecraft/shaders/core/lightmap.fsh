@@ -73,6 +73,18 @@ float blockLightColourMixFactor(float level) {
     return (2.0 * level - 1.0) * (2.0 * level - 1.0);
 }
 
+float getBrightnessFactor() {
+    float addition = float(OVERWORLD_BRIGHTNESS_ADD);
+    if(isInEnd()) {
+        addition = float(END_BRIGHTNESS_ADD);
+    } else if(isInNether()) {
+        addition = float(NETHER_BRIGHTNESS_ADD);
+    }
+    addition /= 100.0;
+
+    return BRIGHTNESS_FACTOR + addition;
+}
+
 void main() {
     float blockSkyFactorCurve = min(isInEnd() ? getCurvedSkyFactorForEndFlash() * 0.5 : 0, 0.8);
     float blockLevel = texCoord.x - min(0.1, blockSkyFactorCurve);
@@ -103,9 +115,9 @@ void main() {
 
     // adjust for brightness setting
     if(isInEnd()) {
-        color += (BRIGHTNESS_FACTOR * (BRIGHTNESS_FACTOR / 1.7) - 0.3) / 4.0;
+        color += (getBrightnessFactor() * (getBrightnessFactor() / 1.7) - 0.3) / 4.0;
     } else {
-        color += (BRIGHTNESS_FACTOR - 0.2) / 4.0;
+        color += (getBrightnessFactor() - 0.2) / 4.0;
     }
 
     // mix end flash colour for end flashes if in the end
