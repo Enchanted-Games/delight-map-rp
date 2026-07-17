@@ -12,7 +12,7 @@
 // - Multiplied with the ambient light colour
 #define OVERWORLD_AMBIENT_MULTIPLIER vec3(0.9)
 
-// - Added to the block light intensity in The Overworld
+// - Added to the block light factor
 #define OVERWORLD_BLOCK_FACTOR_ADD -0.3
 
 // - How much block light can spread
@@ -30,7 +30,7 @@
 // - Multiplied with the ambient light colour
 #define NETHER_AMBIENT_MULTIPLIER vec3(0.9, 0.8, 0.8)
 
-// - Added to the block light intensit
+// - Added to the block light factor
 #define NETHER_BLOCK_FACTOR_ADD -0.1
 
 // - How much block light can spread
@@ -54,7 +54,7 @@
 // - Multiplied with the ambient light colour
 #define END_AMBIENT_MULTIPLIER vec3(1.25, 1.2, 1.5)
 
-// - Added to the block light intensity
+// - Added to the block light factor
 #define END_BLOCK_FACTOR_ADD -0.4
 
 // - How much block light can spread
