@@ -1,7 +1,7 @@
+#version 150
+
 // Shader written by Enchanted_Games (https://enchanted.games)
 // Some parts are adapted from Mojang's shader from the minecraft assets
-
-#version 150
 
 #moj_import <eg_delight_map:settings.glsl>
 #moj_import <eg_delight_map:util.glsl>
