@@ -1,15 +1,16 @@
-#version 150
+#version 330
+#extension GL_ARB_separate_shader_objects : require
 
 // Shader written by Enchanted_Games (https://enchanted.games)
 // Some parts are adapted from Mojang's shader from the minecraft assets
 
-#moj_import <eg_delight_map:settings.glsl>
-#moj_import <eg_delight_map:util.glsl>
-#moj_import <eg_delight_map:lightmap_uniforms.glsl>
+#include <eg_delight_map:settings.glsl>
+#include <eg_delight_map:util.glsl>
+#include <eg_delight_map:lightmap_uniforms.glsl>
 
-in vec2 texCoord;
+layout(location = 0) in vec2 texCoord;
 
-out vec4 fragColor;
+layout(location = 0) out vec4 fragColor;
 
 vec3 getAdjustedAmbientColour() {
     vec3 multiplier = OVERWORLD_AMBIENT_MULTIPLIER;

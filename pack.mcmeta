@@ -1,7 +1,7 @@
 {
   "pack": {
-    "min_format": 84,
-    "max_format": 88,
+    "min_format": 97,
+    "max_format": 97,
     "description": [
       "",
       { "text": "S", "color": "#ffa85c" },
@@ -30,7 +30,7 @@
       { "text": "n", "color": "#ffedc7" },
       { "text": "g", "color": "#fff0cc" },
       { "text": "!\n", "color": "#fff3d1" },
-      "v1.6 | by Enchanted_Games"
+      "v1.6.1 | by Enchanted_Games"
     ]
   }
 }
